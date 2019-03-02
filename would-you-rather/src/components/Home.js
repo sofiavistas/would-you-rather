@@ -47,12 +47,11 @@ class Home extends Component {
 
 function mapStateToProps ({ authedUser, questions, users }) {
   if (users[authedUser]) {
+    const answers = users[authedUser].answers
 
     const sortedQuestions = Object.keys(questions).sort(
       (a, b) => questions[b].timestamp - questions[a].timestamp
     )
-
-    const answers = users[authedUser].answers
 
     return {
       not_answered: sortedQuestions.filter(

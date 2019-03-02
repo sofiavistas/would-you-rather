@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  Switch
+} from 'react-router-dom'
 import { connect } from 'react-redux'
 import LoadingBar from 'react-redux-loading'
 import Nav from './Nav'
@@ -16,34 +22,92 @@ class App extends Component {
   }
 
   render () {
+    const { authedUser } = this.props
     return (
       <Router>
         <div>
           <LoadingBar style={{ zIndex: '4', backgroundColor: 'grey' }} />
-          <div className='body'>
-            {this.props.loading === true ? null : (
-              <div>
-                <Nav />
-                <div className='container'>
-                  <Route path='/' exact component={Home} />
-                  <Route path='/question/:id' exact component={QuestionPage} />
-                  <Route path='/new' exact component={NewQuestion} />
-                  <Route path='/leader-board' exact component={LeaderBoard} />
-                  <Route path='/login' exact component={Login} />
-                </div>
-              </div>
-            )}
-          </div>
+          <Switch>
+            <Route path='/login' exact component={Login} />
+            <PrivateRoute
+              path='/'
+              exact
+              authedUser={authedUser}
+              component={Container(Home)}
+            />
+            <PrivateRoute
+              path='/questions/:qid'
+              exact
+              authedUser={authedUser}
+              component={Container(QuestionPage)}
+            />
+            <PrivateRoute
+              path='/add'
+              exact
+              authedUser={authedUser}
+              component={Container(NewQuestion)}
+            />
+            <PrivateRoute
+              path='/leaderboard'
+              exact
+              authedUser={authedUser}
+              component={Container(LeaderBoard)}
+            />
+            <Route component={NoMatch} />
+          </Switch>
         </div>
       </Router>
     )
   }
 }
 
-function mapStateToProps ({ authedUser }) {
-  return {
-    loading: authedUser === null
-  }
+const PrivateRoute = ({ component: Component, authedUser, ...args }) => {
+  return (
+    <Route
+      {...args}
+      render={props =>
+        authedUser ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  )
 }
 
+const Container = Component => {
+  return props => (
+    <div className='body'>
+      <Nav />
+      <div className='container'>
+        <Component {...props} />
+      </div>
+      <div className='footer'>
+        <p>
+          designed by{' '}
+          <a href='https://www.flaticon.com/authors/freepik'>Freepik</a> from{' '}
+          <a href='https://www.flaticon.com/'>Flaticon</a>
+        </p>
+      </div>
+    </div>
+  )
+}
+
+const NoMatch = ({ location }) => (
+  <div>
+    <h2>404</h2>
+    <h3>
+      No match for <code>{location.pathname}</code>,
+      Go back to the <Link to='/'>Homepage</Link>.
+    </h3>
+  </div>
+)
+
+const mapStateToProps = ({ authedUser }) => ({ authedUser })
 export default connect(mapStateToProps)(App)
