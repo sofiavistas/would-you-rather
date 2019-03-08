@@ -20,29 +20,29 @@ export function addQuestion(question) {
   }
 }
 
-function answerQuestion({ question_id, authedUser, answer }) {
+function answerQuestion({ qid, authedUser, answer }) {
   return {
     type: ANSWER_QUESTION,
-    question_id,
+    qid,
     authedUser,
     answer
   }
 }
 
-export function handleAnswerQuestion({ question_id, answer }) {
+export function handleAnswerQuestion({ qid, answer }) {
   return (dispatch, getState) => {
     const { authedUser } = getState()
-    return saveQuestionAnswer({ authedUser, question_id, answer }).then(() => {
-        dispatch(answerQuestion({ question_id, authedUser, answer }))
-        dispatch(userAnswerQuestion({ question_id, authedUser, answer }))
+    return saveQuestionAnswer({ authedUser, qid, answer }).then(() => {
+        dispatch(answerQuestion({ qid, authedUser, answer }))
+        dispatch(userAnswerQuestion({ qid, authedUser, answer }))
     })
   }
 }
 
-export function handleAddQuestion ({ firstOption, secondOption }) {
+export function handleAddQuestion ({ optionOneText, optionTwoText }) {
   return (dispatch, getState) => {
     const { authedUser } = getState()
-    const question = { firstOption, secondOption, author: authedUser }
+    const question = { optionOneText, optionTwoText, author: authedUser }
     return saveQuestion(question).then(savedQuestion => {
       dispatch(addQuestion(savedQuestion))
       dispatch(userAddQuestion(savedQuestion))

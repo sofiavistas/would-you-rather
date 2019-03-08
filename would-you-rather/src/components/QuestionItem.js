@@ -6,7 +6,7 @@ import { withRouter, Link } from 'react-router-dom'
 const QuestionItem = props => {
   const { question } = props
   if (question === null) return "Question not found."
-  const { question_id, author, summary } = question
+  const { qid, author, summary } = question
   return (
     <div className='question-list-item'>
       <h5 className='title'>{author.name} asks: </h5>
@@ -19,7 +19,7 @@ const QuestionItem = props => {
         <div className='question-summary'>
           <h5>Would you rather</h5>
           <span>{summary}</span>
-          <Link to={`/questions/${question_id}`} className='question-item-link'>
+          <Link to={`/questions/${qid}`} className='question-item-link'>
             View Poll
           </Link>
         </div>
@@ -28,15 +28,15 @@ const QuestionItem = props => {
   )
 }
 
-const mapStateToProps = ({ questions, users }, { question_id }) => {
-  const question = questions[question_id]
+const mapStateToProps = ({ questions, users }, { qid }) => {
+  const question = questions[qid]
   return {
     question: question
       ? {
-        question_id,
+        qid,
         question,
         author: users[question.author],
-        summary: `... ${question.firstOption.text.substring(0, 25)} ...`
+        summary: `... ${question.optionOne.text.substring(0, 25)} ...`
       }
       : null
   }

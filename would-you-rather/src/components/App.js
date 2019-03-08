@@ -11,9 +11,9 @@ import LoadingBar from 'react-redux-loading'
 import Nav from './Nav'
 import Login from './Login'
 import Home from './Home'
-import QuestionPage from './QuestionPage'
+import QuestionPage from './QuestionsPage'
 import NewQuestion from './NewQuestion'
-import LeaderBoard from './LeaderBoard'
+import Leaderboard from './Leaderboard'
 import { handleInitialData } from '../actions/shared'
 
 class App extends Component {
@@ -33,25 +33,25 @@ class App extends Component {
               path='/'
               exact
               authedUser={authedUser}
-              component={Container(Home)}
+              component={Wrapper(Home)}
             />
             <PrivateRoute
               path='/questions/:qid'
               exact
               authedUser={authedUser}
-              component={Container(QuestionPage)}
+              component={Wrapper(QuestionPage)}
             />
             <PrivateRoute
               path='/add'
               exact
               authedUser={authedUser}
-              component={Container(NewQuestion)}
+              component={Wrapper(NewQuestion)}
             />
             <PrivateRoute
               path='/leaderboard'
               exact
               authedUser={authedUser}
-              component={Container(LeaderBoard)}
+              component={Wrapper(Leaderboard)}
             />
             <Route component={NoMatch} />
           </Switch>
@@ -81,7 +81,7 @@ const PrivateRoute = ({ component: Component, authedUser, ...args }) => {
   )
 }
 
-const Container = Component => {
+const Wrapper = Component => {
   return props => (
     <div className='body'>
       <Nav />

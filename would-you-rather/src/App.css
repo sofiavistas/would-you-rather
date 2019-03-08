@@ -6,31 +6,123 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
 }
 
-.body {
-  width: 80%;
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+}
+
+.login-box {
+  width: 400px;
+  height: 200px;
+  margin: 70px auto;
   text-align: center;
 }
 
+.login-box .title {
+  text-align: center;
+  line-height: 25px;
+}
+
+.login-icon {
+  margin: 10px auto;
+  color: #8fd8e6;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.login-box h3 {
+  color: #cc8400;
+}
+
+p {
+  font-size: 12px;
+  color: #999;
+}
+
+.login-content {
+  display: grid;
+  padding: 10px;
+  grid-gap: 5px;
+}
+.login-content button {
+  background-color: #ffa500;
+}
+.users-select {
+  background-size: 45px 45px;
+  padding-left: 50px;
+}
+
 /* nav */
-.home-menu{
-  border-bottom: 2px solid #2fbea4;
+.home-menu {
+  text-align: center;
+  border-bottom: 4px solid #ffa500;
   background-color: white;
 }
 
 .nav-user {
   margin-left: 2em;
+  vertical-align: middle;
+  height: 32px;
+  padding-bottom: 2px;
 }
 
-.avatar-small{
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin: auto 20px auto 15px;
+.pure-menu-link{
+  padding: 0.5em 2em;
 }
-.sweet-loading{
-  width: 60px;
+.pure-menu-link:hover,
+.menu-selected{
+  background-color: #ffa500;
+  color: white;
+}
+
+.avatar-small {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  margin: 0px 20px 0px 15px;
+}
+
+.logout-button {
+  border: none;
+  background-color: white;
+  color: #cd661d;
+}
+
+/* loader */
+.loader {
+  border: 5px solid #ffa500;
+  border-radius: 50%;
+  border-top: 5px solid #ffa500;
+  width: 15px;
+  height: 15px;
+  -webkit-animation: spin 0.5s linear infinite; /* Safari */
+  animation: spin 0.5s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* content */
@@ -43,10 +135,8 @@ body {
   text-align: -moz-center;
 }
 
-.content{
-  width: 400px;
-  border: 1px solid #dfdfdf;
-  border-radius: 3px;
+.content {
+  width: 600px;
   margin: 0 auto;
   display: grid;
 }
@@ -58,46 +148,44 @@ body {
   margin: 8px 8px 0px;
 }
 
-.question-list li{
-  border: 1px solid #dfdfdf;
+.question-list li {
+  border: 2px solid #ffa500;
   border-radius: 3px;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 
-.tab-button{
+.tab-button {
   margin: 0;
   width: 50%;
 }
 
 /* question item */
-.question-list-item{
-  /* height: 115px; */
+.question-list-item {
   display: grid;
 }
 
-.question-title{
+.title {
   margin: 0;
-  line-height:2.2em;
-  background-color:#f8f8f8;
+  line-height: 2.2em;
+  background-color: #ffa500;
   text-align: left;
   padding-left: 8px;
   border-radius: 2px 2px 0px 0px;
   border-bottom: 1px solid #dfdfdf;
 }
 
-
-.avatar-middle{
+.avatar-middle {
   width: 60px;
   height: 60px;
   float: left;
   border-radius: 50%;
-  margin: 15px 40px;
+  margin: 20px 40px;
 }
 
-.question-summary{
+.question-summary {
   display: grid;
   grid-row-gap: 9px;
-  width: 210px;
+  width: 400px;
   float: left;
   text-align: left;
   border-left: 1px solid #dfdfdf;
@@ -105,58 +193,53 @@ body {
   padding-left: 15px;
 }
 
-.question-summary h5{
+.question-summary h5 {
   margin: 0;
 }
 
-.question-summary h3{
+.question-summary h3 {
   margin: 0;
 }
 
-.question-summary span{
+.question-summary span {
   font-size: 12px;
-  color:#8a8a8a;
+  color: #8a8a8a;
 }
 
-.question-item-link{
+.question-item-link {
   text-align: center;
-  border: 1px solid #2fbea4;
+  border: 1px solid #ff7f50;
   border-radius: 3px;
-  color: #2fbea4;
+  color: #ff7f50;
   font-size: 12px;
+  font-weight: bold;
   text-decoration: none;
   line-height: 1.7em;
 }
 
 /* question-page */
-.submit-button{
-  background-color: #31bea6;
+.submit-button {
+  background-color: #ffa500;
   color: white;
   margin-bottom: 5px;
 }
 
-.question-summary input{
+.question-summary input {
   margin-right: 5px;
 }
 
-.question-box{
-  display:table-cell;
-  vertical-align:middle;
-
+.question-box {
+  display: table-cell;
+  vertical-align: middle;
 }
 
-.question-box-avatar{
-  /* text-align: center; */
-/*   width: 160px; */
-  height: 100%;
-  float:left;
-  /* white-space: nowrap; */
-  /* vertical-align: middle; */
+.question-box-avatar {
+  float: left;
   display: flex;
   align-items: center;
 }
 
-.avatar-big{
+.avatar-big {
   width: 140px;
   height: 140px;
   float: left;
@@ -165,20 +248,20 @@ body {
   margin-right: 10px;
 }
 
-.percentage-bar{
+.percentage-bar {
   border-radius: 3px;
   background-color: #f1f1f1;
 }
 
-.percentage-bar-progress{
+.percentage-bar-progress {
   border-radius: 3px;
   color: white;
-  background-color: #2fbea4;
+  background-color: #723333;
   text-align: right;
   padding: 2px auto;
 }
 
-.question-result{
+.question-result {
   background-color: #f8f8f8;
   border: 1px solid #dfdfdf;
   border-radius: 3px;
@@ -191,7 +274,7 @@ body {
   position: relative;
 }
 
-.question-result span{
+.question-result span {
   color: #000000;
   font-size: 15px;
   font-weight: bold;
@@ -199,15 +282,15 @@ body {
   margin-bottom: 5px;
 }
 
-.question-result-voted{
-  background-color: #e1f8f6;
-  border: #32bda6 1px solid;
+.question-result-voted {
+  background-color: #ffd5d5;
+  border: #cc5c5c 1px solid;
 }
 
-.question-result-voted:after{
+.question-result-voted:after {
   content: "Your vote";
   position: absolute;
-  background: #e9ba15;
+  background: #cd661d;
   height: 30px;
   bottom: 66px;
   left: 190px;
@@ -216,33 +299,169 @@ body {
   font-size: 11px;
   border-radius: 50%;
   color: white;
-  border: 1px solid #e9ba15;
+  border: 1px solid #cd661d;
   padding: 3px 2px 1px 2px;
 }
 
-.question-result-voted span{
-  color: #2fbea4;
+.question-result-voted span {
+  color: #cc5c5c;
 }
+
+/* new question */
+.new-question {
+  text-align: left;
+}
+.new-question p {
+  text-align: left;
+  margin: 5px 10px;
+}
+.new-question h5 {
+  text-align: left;
+  margin: 10px auto -10px 10px;
+}
+.new-question h3 {
+  text-align: center;
+}
+.new-question-form {
+  display: grid;
+  padding: 10px;
+  grid-gap: 5px;
+}
+
+/* leaderboard */
+.leader-board {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.leader-board ul {
+  list-style-type: none;
+  float: left;
+}
+
+.leader-board-item {
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.leader-board-item img {
+  margin: 25px 5px 25px 15px;
+}
+.item-content {
+  display: flex;
+}
+.leader-board-info {
+  float: left;
+  width: 210px;
+  margin: 10px;
+  padding: 8px;
+  text-align: left;
+  border-left: 2px solid #f3f3f3;
+  border-right: 2px solid #f3f3f3;
+}
+.leader-board-info hr {
+  width: inherit;
+  border: none;
+  border-top: 1px solid #f3f3f3;
+  color: white;
+  display: flex;
+  margin: 30px 0 3px 0;
+}
+.leader-board-info h4 {
+  margin-bottom: 10px;
+}
+.score-type {
+  width: 120px;
+  float: left;
+  font-size: 12px;
+}
+.score-count {
+  width: 10px;
+  float: right;
+  font-size: 12px;
+}
+.score-box {
+  margin: 10px 10px 10px 0;
+  border: 1px solid #ffa500;
+  border-radius: 3px;
+  text-align: center;
+}
+.score-box h5 {
+  padding: 3px 10px;
+  text-align: center;
+}
+.score {
+  line-height: 50px;
+  background: #ffa500;
+  border-radius: 50%;
+  color: white;
+  border: 1px solid ##ffa500;
+  padding: 8px 13px;
+  font-weight: bold;
+}
+.top1 {
+  color: #daa520;
+}
+.top2 {
+  color: #99abb6;
+}
+.top3 {
+  color: #977253;
+}
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 45px solid #fdfab4;
+  border-right: 45px solid transparent;
+}
+.triangle > span {
+  position: absolute;
+  top: -38px;
+  left: 5px;
+  font-weight: bold;
+}
+.item-content {
+}
+
 .puru-u-51,
 .puru-u-51-1,
 .puru-u-51-2,
 .puru-u-52-2 {
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
-    letter-spacing: normal;
-    word-spacing: normal;
-    vertical-align: top;
-    text-rendering: auto;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  vertical-align: top;
+  text-rendering: auto;
 }
 
 .puru-u-51-2 {
-    width: 50%;
-    *width: 49.9690%;
+  width: 50%;
+  *width: 49.969%;
 }
 
 .puru-u-51,
 .puru-u-51-1,
 .puru-u-52-2 {
-    width: 100%;
+  width: 100%;
+}
+
+/* footer */
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  color: white;
+  text-align: center;
+}
+.footer a{
+  text-decoration: none;
+  color: #ffa500;
 }

@@ -16,10 +16,10 @@ export function userAddQuestion(question) {
   }
 }
 
-export function userAnswerQuestion({ question_id, authedUser, answer }) {
+export function userAnswerQuestion({ qid, authedUser, answer }) {
   return {
     type: USER_ANSWER_QUESTION,
-    question_id,
+    qid,
     authedUser,
     answer
   }

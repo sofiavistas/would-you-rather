@@ -1,55 +1,67 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAnswerQuestion } from '../actions/questions'
 import PercentageBar from './PercentageBar'
+import { handleAnswerQuestion } from '../actions/questions'
 
-class QuestionPage extends Component {
-  handleSubmit = (e, answer) => {
-    const { dispatch, question } = this.props
-    dispatch(
-      handleAnswerQuestion({
-        question_id: question.id,
-        answer: answer
-      })
-    )
+
+
+const QuestionsPage = props => {
+  const { question, onSubmit } = props
+
+  if (question === null) {
+    return <p>Question Not Found.</p>
   }
+  const { id, author, optionOne, optionTwo, answered } = question
 
-  render () {
-    const { question } = this.props
-    if (question === null) {
-      return <p>Question Not Found.</p>
-    }
-    const { author, firstOption, secondOption, answered } = question
-    return (
-      <div className='content'>
-        <h5 className='question-title'>{author.name} asks: </h5>
-        <div className='question-box'>
-          <div className='question-box-avatar'>
-            <img src={author.avatarURL} className='avatar-big' />
-          </div>
-          {answered === null ? (
-            <NotAnsweredQuestion
-              answered={answered}
-              firstOption={firstOption.text}
-              secondOption={secondOption.text}
-              handleSubmit={this.handleSubmit}
-            />
-          ) : (
-            <AnsweredQuestion
-              answered={answered}
-              firstOption={firstOption}
-              secondOption={secondOption}
-            />
-          )}
+  return (
+    <div className='content'>
+      <h5 className='title'>{author.name} asks: </h5>
+      <div className='question-box'>
+        <div className='question-box-avatar'>
+          <img
+            src={`/images/avatars/${author.avatarURL}`}
+            className='avatar-big'
+            alt={author.name}
+          />
         </div>
+        {answered === null ? (
+          <NotAnsweredQuestion
+            answered={answered}
+            optionOne={optionOne.text}
+            optionTwo={optionTwo.text}
+            onSubmit={onSubmit}
+            qid={id}
+          />
+        ) : (
+          <AnsweredQuestion
+            answered={answered}
+            optionOne={optionOne}
+            optionTwo={optionTwo}
+          />
+        )}
       </div>
-    )
-  }
+    </div>
+  )
 }
+
 
 class NotAnsweredQuestion extends Component {
   state = {
-    answer: 'firstOption'
+    answer: 'optionOne',
+    loading: false
+  }
+
+  handleSubmit = e => {
+    this.setState({ loading: true })
+
+    const { qid, onSubmit } = this.props
+
+    onSubmit(this.state.answer, qid).catch(() => {
+      console.warn('Error in handleAnswerQuestion: ', e)
+      alert('There was an error answering the question. Please try again.')
+
+      this.setState({ loading: false })
+    })
   }
 
   handleRadioChange = e => {
@@ -62,46 +74,49 @@ class NotAnsweredQuestion extends Component {
 
   render () {
     const answer = this.state.answer
-    const { firstOption, secondOption, handleSubmit } = this.props
+    const { optionOne, optionTwo } = this.props
     return (
       <div className='question-summary'>
         <h3>Would you rather ...</h3>
-        <label htmlFor='firstOption' className='pure-radio'>
+        <label htmlFor='optionOne' className='pure-radio'>
           <input
-            id='firstOption'
+            id='optionOne'
             type='radio'
             name='options'
-            value='firstOption'
-            checked={answer === 'firstOption'}
+            value='optionOne'
+            checked={answer === 'optionOne'}
             onChange={this.handleRadioChange}
           />
-          {firstOption}
+          {optionOne}
         </label>
 
-        <label htmlFor='secondOption' className='pure-radio'>
+        <label htmlFor='optionTwo' className='pure-radio'>
           <input
-            id='secondOption'
+            id='optionTwo'
             type='radio'
             name='options'
-            value='secondOption'
-            checked={answer === 'secondOption'}
+            value='optionTwo'
+            checked={answer === 'optionTwo'}
             onChange={this.handleRadioChange}
           />
-          {secondOption}
+          {optionTwo}
         </label>
         <button
           className='pure-button submit-button'
-          onClick={e => handleSubmit(e, answer)}
+          onClick={this.handleSubmit}
+          disabled={this.state.loading}
         >
-          Submit
+          {this.state.loading ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     )
   }
 }
 
-const AnsweredQuestion = ({ answered, firstOption, secondOption }) => {
-  const votes = firstOption.votes.concat(secondOption.votes).length
+const AnsweredQuestion = ({ answered, optionOne, optionTwo }) => {
+
+  const votes = optionOne.votes.concat(optionTwo.votes).length
+  const optionOnePercent = optionOne.votes.length / votes * 100
 
   const result = (
     <div className='question-summary'>
@@ -110,26 +125,28 @@ const AnsweredQuestion = ({ answered, firstOption, secondOption }) => {
         className={`question-result ${answered === 'optionOne' &&
           'question-result-voted'}`}
       >
-        <span>{firstOption.text}</span>
-        <PercentageBar percentage={5} />
-        {firstOption.votes.length} out of {votes} votes
+        <span>{optionOne.text}</span>
+        <PercentageBar percentage={optionOnePercent} />
+        {optionOne.votes.length} out of {votes} votes
       </div>
       <div
-        className={`question-result ${answered === 'secondOption' &&
+        className={`question-result ${answered === 'optionTwo' &&
           'question-result-voted'}`}
       >
-        <span>{secondOption.text}</span>
-        <PercentageBar percentage={60} />
-        {secondOption.votes.length} out of {votes} votes
+        <span>{optionTwo.text}</span>
+        <PercentageBar percentage={100 - optionOnePercent} />
+        {optionTwo.votes.length} out of {votes} votes
       </div>
     </div>
   )
   return result
 }
 
-function mapStateToProps ({ authedUser, questions, users }, props) {
-  const { id } = props.match.params
-  const question = questions[id]
+
+const mapStateToProps = ({ authedUser, questions, users }, props) => {
+
+  const { qid } = props.match.params
+  const question = questions[qid]
 
   return {
     authedUser,
@@ -137,12 +154,25 @@ function mapStateToProps ({ authedUser, questions, users }, props) {
       ? {
         ...question,
         author: users[question.author],
-        answered: Object.keys(users[authedUser].answers).includes(id)
-          ? users[question.author].answers[id]
+        answered: Object.keys(users[authedUser].answers).includes(qid)
+          ? users[authedUser].answers[qid]
           : null
       }
       : null
   }
 }
 
-export default connect(mapStateToProps)(QuestionPage)
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmit: (answer, qid) => {
+      return dispatch(
+        handleAnswerQuestion({
+          qid,
+          answer
+        })
+      )
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsPage)

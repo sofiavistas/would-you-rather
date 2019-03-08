@@ -9,7 +9,7 @@ export function generateUID () {
   )
 }
 
-export function formatQuestion ({ firstText, optionTwoText, author }) {
+export function formatQuestion ({ optionOneText, optionTwoText, author }) {
   return {
     id: generateUID(),
     timestamp: Date.now(),

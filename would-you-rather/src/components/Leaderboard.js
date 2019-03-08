@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { IoMdTrophy } from 'react-icons/io/index'
 
-const LeaderBoard = props =>
+const Leaderboard = props =>
   props.top.length > 0 ? (
     <div className='leader-board'>
       <ul>
@@ -60,4 +60,4 @@ function mapStateToProps ({ users }) {
   }
 }
 
-export default connect(mapStateToProps)(LeaderBoard)
+export default connect(mapStateToProps)(Leaderboard)

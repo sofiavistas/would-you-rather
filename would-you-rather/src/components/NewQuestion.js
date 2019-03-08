@@ -7,8 +7,8 @@ import { handleAddQuestion } from '../actions/questions'
 class NewQuestion extends Component {
   state = {
     loading: false,
-    firstOption: '',
-    secondOption: '',
+    optionOneText: '',
+    optionTwoText: '',
     toHome: false
   }
 
@@ -18,8 +18,8 @@ class NewQuestion extends Component {
 
   submitAvailable = () => {
     return (
-      this.state.firstOption.trim() === '' ||
-      this.state.secondOption.trim() === '' ||
+      this.state.optionOneText.trim() === '' ||
+      this.state.optionTwoText.trim() === '' ||
       this.state.loading === true
     )
   }
@@ -27,10 +27,10 @@ class NewQuestion extends Component {
   handleSubmit = e => {
     e.preventDefault()
     this.setState({ loading: true })
-    const { firstOption, secondOption } = this.state
+    const { optionOneText, optionTwoText } = this.state
     const { onSubmit } = this.props
 
-    onSubmit(firstOption, secondOption)
+    onSubmit(optionOneText, optionTwoText)
       .then(() => this.setState({ toHome: true }))
       .catch(() => {
         console.warn('Error in handleAddQuestion: ', e)
@@ -46,25 +46,24 @@ class NewQuestion extends Component {
     return (
       <div className='content new-question'>
         <h3 className='title'>Submit New Question</h3>
-        <p>Complete the question:</p>
         <h5>Would you rather ...</h5>
         <form onSubmit={this.handleSubmit} className='pure-form pure-form-stacked'>
           <div className='new-question-form'>
             <input
               type='text'
-              name='firstOption'
+              name='optionOneText'
               maxLength={55}
-              placeholder='Enter First Option'
-              value={this.state.firstOption}
+              placeholder='Enter your first option'
+              value={this.state.optionOneText}
               onChange={this.inputOnChange}
             />
             <h3>OR</h3>
             <input
               type='text'
-              name='secondOption'
+              name='optionTwoText'
               maxLength={55}
-              placeholder='Enter Second Option'
-              value={this.state.secondOption}
+              placeholder='Enter your second option'
+              value={this.state.optionTwoText}
               onChange={this.inputOnChange}
             />
             <button
@@ -83,8 +82,8 @@ class NewQuestion extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmit: (firstOption, secondOption) => {
-      return dispatch(handleAddQuestion({ firstOption, secondOption }))
+    onSubmit: (optionOneText, optionTwoText) => {
+      return dispatch(handleAddQuestion({ optionOneText, optionTwoText }))
     }
   }
 }

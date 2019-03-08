@@ -2,19 +2,19 @@ import {
   USER_ANSWER_QUESTION,
   RECEIVE_USERS,
   USER_ADD_QUESTION
-} from ''
+} from '../actions/users'
 
-export default function users (state = [], action) {
+export default function users (state = null, action) {
   switch (action.type) {
     case USER_ANSWER_QUESTION:
-      const { question_id, authedUser, answer } = action
+      const { qid, authedUser, answer } = action
       return {
         ...state,
         [authedUser]: {
           ...state[authedUser],
           answers: {
              ...state[authedUser].answers,
-              [question_id]: answer
+              [qid]: answer
             }
         }
       }

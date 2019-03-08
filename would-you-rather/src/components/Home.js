@@ -12,31 +12,38 @@ class Home extends Component {
     this.setState({ question: e.target.name })
   }
 
-  render() {
+  render () {
+    const { question } = this.state
 
-    let answered_class = 'tab-button pure-button'
     let not_answered_class = 'tab-button pure-button'
+    let answered_class = 'tab-button pure-button'
+    
+    question === 'not_answered'
+      ? (not_answered_class += ' pure-button-active')
+      : (answered_class += ' pure-button-active')
 
-    return(
+    return (
       <div className='content'>
         <div className='pure-button-group' role='toolbar' aria-label='...'>
+        <button
+          name='answered'
+          className={answered_class}
+          onClick={this.handleTab}
+        >
+          Answered Questions
+        </button>
           <button
-            name='answered'
-            className={answered_class}
-            onClick={this.handleTab}
-          >Answered
-          </button>
-          <button
-            name='unanswered'
+            name='not_answered'
             className={not_answered_class}
             onClick={this.handleTab}
-          >Not Answered
+          >
+            Not Answered Questions
           </button>
         </div>
         <ul className='question-list'>
           {this.props[this.state.question].map(q => (
             <li key={q}>
-              <QuestionItem question_id={q} />
+              <QuestionItem qid={q} />
             </li>
           ))}
         </ul>
@@ -47,12 +54,10 @@ class Home extends Component {
 
 function mapStateToProps ({ authedUser, questions, users }) {
   if (users[authedUser]) {
-    const answers = users[authedUser].answers
-
     const sortedQuestions = Object.keys(questions).sort(
       (a, b) => questions[b].timestamp - questions[a].timestamp
     )
-
+    const answers = users[authedUser].answers
     return {
       not_answered: sortedQuestions.filter(
         q => !Object.keys(answers).includes(q)

@@ -42,7 +42,7 @@ const Nav = props => {
         ) : (
           <li className='pure-menu-item'>
             <div className='nav-user'>
-              Hello, {authedUserProfile.name}
+              Hello there, {authedUserProfile.name} !
               <img
                 className='avatar-small'
                 src={`/images/avatars/${authedUserProfile.avatarURL}`}
